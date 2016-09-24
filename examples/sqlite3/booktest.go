@@ -6,7 +6,7 @@ import (
 	"log"
 	"time"
 
-	_ "github.com/mattn/go-sqlite3"
+	//_ "github.com/mattn/go-sqlite3"
 
 	"github.com/knq/dburl"
 	"github.com/knq/xo/examples/sqlite3/models"
