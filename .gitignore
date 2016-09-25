@@ -8,3 +8,4 @@
 /out
 /*.xo.go
 *.sqlite3
+/.idea

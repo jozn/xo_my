@@ -26,6 +26,12 @@ func (a *ArgType) NewTemplateFuncs() template.FuncMap {
 		"convext":        a.convext,
 		"schema":         a.schemafn,
 		"colname":        a.colname,
+		"toLower":        strings.ToLower,
+		"ms_conds":       ms_conds,
+		"ms_in":          ms_in,
+		"ms_gen_types":   ms_gen_types,
+		"ms_to_slice":    ms_to_slice,
+		"ms_str_cond":    ms_str_cond,
 	}
 }
 

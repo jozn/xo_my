@@ -11,7 +11,7 @@ import (
 	"unicode"
 
 	"github.com/gedex/inflector"
-	"github.com/serenize/snaker"
+	//"github.com/serenize/snaker"
 )
 
 // ParseQuery takes the query in args and looks for strings in the form of
@@ -258,8 +258,10 @@ var underscoreRE = regexp.MustCompile(`_+`)
 
 // SnakeToIdentifier wraps snaker.SnakeToCamel and adds logic specific for xo and go.
 func SnakeToIdentifier(s string) string {
+	// return s
+
 	// lowercase
-	s = strings.ToLower(s)
+	//s = strings.ToLower(s)
 
 	// replace bad chars with _
 	s = replaceBadChars(s)
@@ -271,5 +273,81 @@ func SnakeToIdentifier(s string) string {
 	// fix 2 or more __
 	s = underscoreRE.ReplaceAllString(s, "_")
 
-	return snaker.SnakeToCamel(s)
+	return SnakeToCamel(s)
+}
+
+//Me copied
+// SnakeToCamel returns a string converted from snake case to uppercase
+func SnakeToCamel(s string) string {
+	var result string
+
+	words := strings.Split(s, "_")
+
+	for _, word := range words {
+		if upper := strings.ToUpper(word); commonInitialisms[upper] {
+			result += upper
+			continue
+		}
+
+		if len(word) > 0 {
+			w := []rune(word)
+			w[0] = unicode.ToUpper(w[0])
+			result += string(w)
+		}
+	}
+
+	return result
+}
+
+// startsWithInitialism returns the initialism if the given string begins with it
+func startsWithInitialism(s string) string {
+	var initialism string
+	// the longest initialism is 5 char, the shortest 2
+	for i := 1; i <= 5; i++ {
+		if len(s) > i-1 && commonInitialisms[s[:i]] {
+			initialism = s[:i]
+		}
+	}
+	return initialism
+}
+
+// commonInitialisms, taken from
+// https://github.com/golang/lint/blob/32a87160691b3c96046c0c678fe57c5bef761456/lint.go#L702
+var commonInitialisms = map[string]bool{
+	"API":   true,
+	"ASCII": true,
+	"CPU":   true,
+	"CSS":   true,
+	"DNS":   true,
+	"EOF":   true,
+	"GUID":  true,
+	"HTML":  true,
+	"HTTP":  true,
+	"HTTPS": true,
+	// "ID":    true,
+	"IP":   true,
+	"JSON": true,
+	"LHS":  true,
+	"QPS":  true,
+	"RAM":  true,
+	"RHS":  true,
+	"RPC":  true,
+	"SLA":  true,
+	"SMTP": true,
+	"SQL":  true,
+	"SSH":  true,
+	"TCP":  true,
+	"TLS":  true,
+	"TTL":  true,
+	"UDP":  true,
+	"UI":   true,
+	"UID":  true,
+	"UUID": true,
+	"URI":  true,
+	"URL":  true,
+	"UTF8": true,
+	"VM":   true,
+	"XML":  true,
+	"XSRF": true,
+	"XSS":  true,
 }
