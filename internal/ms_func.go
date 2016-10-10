@@ -1,5 +1,9 @@
 package internal
 
+import (
+	"fmt"
+)
+
 type msCond struct {
 	Suffix, Condition string
 }
@@ -37,4 +41,24 @@ func ms_gen_types() []string {
 
 func ms_to_slice(typ ...string) []string {
 	return typ
+}
+
+func ms_append_fieldnames(fields []*Field, slice string, ignoreNames ...string) string {
+	ignore := map[string]bool{}
+	for _, n := range ignoreNames {
+		ignore[n] = true
+	}
+
+	str := ""
+	i := 0
+	for _, f := range fields {
+		if ignore[f.Name] {
+			continue
+		}
+		str += fmt.Sprintf("%s = append(%s, row.%s) \n", slice, slice, f.Name)
+
+		i++
+	}
+
+	return str
 }
