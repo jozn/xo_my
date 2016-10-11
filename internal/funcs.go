@@ -33,6 +33,7 @@ func (a *ArgType) NewTemplateFuncs() template.FuncMap {
 		"ms_to_slice":          ms_to_slice,
 		"ms_str_cond":          ms_str_cond,
 		"ms_append_fieldnames": ms_append_fieldnames,
+		"ms_question_mark":     ms_question_mark,
 	}
 }
 

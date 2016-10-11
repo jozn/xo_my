@@ -2,6 +2,7 @@ package internal
 
 import (
 	"fmt"
+	"strings"
 )
 
 type msCond struct {
@@ -61,4 +62,24 @@ func ms_append_fieldnames(fields []*Field, slice string, ignoreNames ...string) 
 	}
 
 	return str
+}
+
+func ms_question_mark(fields []*Field, ignoreNames ...string) string {
+	ignore := map[string]bool{}
+	for _, n := range ignoreNames {
+		ignore[n] = true
+	}
+
+	n := 0
+	//l:=len(fields) - len(ignore)
+	for _, f := range fields {
+		if ignore[f.Name] {
+			continue
+		}
+		n++
+	}
+
+	s := strings.Repeat("?,", n)
+
+	return s[0 : len(s)-1]
 }
